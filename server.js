@@ -19,7 +19,7 @@ app.post('/api/username', (req, res)=>{
     let {username} = req.body
     username = username.trim()
 
-    const index = usernames.findIndex(userName=> usersName === username)
+    const index = usernames.findIndex(userName=> userName === username)
 
     if(index === -1 && username !== ''){
         usernames.push(username)
