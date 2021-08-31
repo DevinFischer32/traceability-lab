@@ -9,12 +9,6 @@ let rollbar = new Rollbar({
 })
 
 const app = express()
-const usernames = []
-
-// app.get('/',(req,res)=>{
-//     res.sendFile(path.join(__dirname, '/public/index.html'))
-//     rollbar.info('Html loaded')
-// })
 
 app.get('/',(req,res)=>{
     try{
@@ -34,17 +28,18 @@ app.get('/js',(req,res)=>{
     }
 })
 
+const usernames = []
 app.post('/api/username', (req, res)=>{
-    let {username} = req.body
-    username = username.trim()
+    let {name} = req.body
+    name = name.trim()
 
-    const index = usernames.findIndex(userName=> userName === username)
+    const index = usernames.findIndex(usernameName => usernameName === name)
 
-    if(index === -1 && username !== ''){
-        usernames.push(username)
-        rollbar.log('username added successfully', {author: 'Devin', type: 'manual entry'})
+    if(index === -1 && name !== ''){
+        usernames.push(name)
+        rollbar.log('Username added successfully', {author: 'Devin', type: 'manual entry'})
         res.status(200).send(usernames)
-    } else if (username === ''){
+    } else if (name === ''){
         rollbar.error('No username given')
         res.status(400).send('must provide a username.')
     } else {
@@ -55,6 +50,7 @@ app.post('/api/username', (req, res)=>{
 })
 
 
-const port = process.env.PORT || 4545
+const port = process.env.PORT || 5501
+
 app.use(rollbar.errorHandler())
 app.listen(port, ()=> console.log(`Transcribing on port ${port}!`))
