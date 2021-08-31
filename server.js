@@ -10,9 +10,28 @@ let rollbar = new Rollbar({
 
 const app = express()
 const usernames = []
+
+// app.get('/',(req,res)=>{
+//     res.sendFile(path.join(__dirname, '/public/index.html'))
+//     rollbar.info('Html loaded')
+// })
+
 app.get('/',(req,res)=>{
-    res.sendFile(path.join(__dirname, '/public/index.html'))
-    rollbar.info('Html loaded')
+    try{
+        res.sendFile(path.join(__dirname, '/public/index.html'))
+        rollbar.info('Html loaded')
+    }catch (err){
+        rollbar.critical(err)
+    }
+})
+
+app.get('/js',(req,res)=>{
+    try{
+        nonExistentFunction()
+    }catch(err){
+        alert(err)
+        rollbar.warning('js error')
+    }
 })
 
 app.post('/api/username', (req, res)=>{
