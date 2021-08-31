@@ -37,5 +37,5 @@ app.post('/api/username', (req, res)=>{
 
 
 const port = process.env.PORT || 4545
-
+app.use(rollbar.errorHandler())
 app.listen(port, ()=> console.log(`Transcribing on port ${port}!`))
