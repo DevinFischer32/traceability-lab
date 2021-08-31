@@ -9,7 +9,7 @@ let rollbar = new Rollbar({
 })
 
 const app = express()
-
+app.use(express.json())
 app.get('/',(req,res)=>{
     try{
         res.sendFile(path.join(__dirname, '/public/index.html'))
