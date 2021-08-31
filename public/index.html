@@ -4,13 +4,48 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
     <title>Traceability</title>
 </head>
 <body>
     <h1>Check if Availible</h1>
     <form action="">
         <input type="text" placeholder="Username">
-        <button>+</button>
+        <button>Check</button>
     </form>
+    <section></section>
+    <script>
+        const checkForm = document.querySelector('form')
+        const usernameInput = document.querySelector('input')
+        const container = document.querySelector('section')
+
+        function submitHandler(e){
+            e.preventDefault()
+            axios.post('/api/username', {username: usernameInput.value })
+                .then(res =>{
+                    container.innerHTML = ''
+                    usernameInput.value = ''
+
+                    res.data.forEach(name =>{
+                        container.innerHTML += `<p>${name}</p>`
+                    })
+                })
+                .catch(err =>{
+                    usernameInput.value = ''
+
+                    const notif = document.createElement('aside')
+                    notif.innerHTML = `<p>${err.response.data}</p>
+                    <button class='close'>close</button>`
+                    document.body.appendChild(notif)
+
+                    document.querySelectorAll('.close').forEach(btn => {
+                        btn.addEventListener('click', (e)=>{
+                            e.target.parentNode.remove()
+                })
+            })
+        })
+    }
+     checkForm.addEventListener('submit', submitHandler)  
+    </script>
 </body>
 </html>
